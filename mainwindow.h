@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "videocontainer.h"
+#include "commentmanager.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -24,7 +27,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QVideoWidget *m_videoWidget;
+
     QMediaPlayer *m_mediaPlayer;
     qint64 m_maxTime;
 };

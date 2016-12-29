@@ -8,16 +8,17 @@
 
 #include <QVideoWidget>
 #include <QMediaPlayer>
+#include <QGraphicsVideoItem>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_videoWidget(new QVideoWidget(this)),
     m_mediaPlayer(new QMediaPlayer(this)),
     m_maxTime(0)
 {
     ui->setupUi(this);
-    ui->mainLayout->insertWidget(0, m_videoWidget);
+
+    m_mediaPlayer->setVideoOutput(ui->graphicsView->getVideoItem());
 
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, [&](qint64 v){
         ui->timeSlider->setMaximum(static_cast<int>(v));
@@ -41,12 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->volumeSlider->setValue(m_mediaPlayer->volume());
 
-    m_mediaPlayer->setVideoOutput(m_videoWidget);
-
     setFocus();
     setAcceptDrops(true);
-
-    centralWidget()->setStyleSheet("background-color: transparent");
 }
 
 MainWindow::~MainWindow()
@@ -114,4 +111,3 @@ void MainWindow::dropEvent(QDropEvent *event)
     auto url = event->mimeData()->urls().first();
     m_mediaPlayer->setMedia(url);
 }
-
